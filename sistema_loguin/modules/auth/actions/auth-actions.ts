@@ -1,0 +1,30 @@
+"use server";
+
+import { PrismaClient } from "@prisma/client";
+import * as bcrypt from "bcrypt";
+import { redirect } from "next/navigation";
+
+const prisma = new PrismaClient();
+
+async function CreateAccount(formData: FormData) {
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  const hashPassword = await bcrypt.hash(password, 10); //10(dificulta a quebra da criptografia)
+
+  try {
+    await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashPassword,
+      },
+    });
+  }
+  catch {
+    
+  }
+
+  redirect('/portal/login')
+}
