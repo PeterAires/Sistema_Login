@@ -1,5 +1,3 @@
-"use server";
-
 import { PrismaClient } from "@prisma/client";
 import * as bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
@@ -7,13 +5,13 @@ import { redirect } from "next/navigation";
 const prisma = new PrismaClient();
 
 async function CreateAccount(formData: FormData) {
-  const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-
-  const hashPassword = await bcrypt.hash(password, 10); //10(dificulta a quebra da criptografia)
-
+  "use server";
   try {
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const hashPassword = await bcrypt.hash(password, 10); //10(dificulta a quebra da criptografia)
+
     await prisma.user.create({
       data: {
         name,
@@ -21,10 +19,18 @@ async function CreateAccount(formData: FormData) {
         password: hashPassword,
       },
     });
-  }
-  catch {
+    alert("Sucesso!");
+  } catch (e) {
+    console.log(e);
+    console.log('error');
     
   }
 
-  redirect('/portal/login')
+  redirect("/portal/login");
 }
+
+const AuthActions = {
+  CreateAccount
+}
+
+export default AuthActions
