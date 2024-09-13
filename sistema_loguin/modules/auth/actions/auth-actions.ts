@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import * as bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
-import { use } from "react";
+import AuthService from "../services/auth_service";
 
 const prisma = new PrismaClient();
 
@@ -51,8 +51,8 @@ async function Loguin(formData: FormData) {
     redirect("/portal/login")
   }
 
-  // se o usuario e a senha forem válidos
-  // o todo é criar a sessão com JWT e ai redireciona pro Portal
+  await AuthService.createSessionToken({sub: user.id ,name: user.name, email: user.email})//payload
+
   console.log('loguin Efetuado')
   redirect("/portal");
 }
