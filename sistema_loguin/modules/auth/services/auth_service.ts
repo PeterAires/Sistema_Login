@@ -30,23 +30,28 @@ async function createSessionToken(payload = {}) {
 }
 
 async function isSessionValid() {
-  const sessionCookie = cookies().get('session')
+  const sessionCookie = cookies().get("session");
 
   if (sessionCookie) {
-    const {value} = sessionCookie
-    const {exp} = await openSessionToken(value)
-    const currentDate = new Date().getTime()
+    const { value } = sessionCookie;
+    const { exp } = await openSessionToken(value);
+    const currentDate = new Date().getTime();
 
-    return ((exp as number) * 1000) > currentDate;
-  }//se a expiração do meu token maior que a minha data atual, ou seja, ainda não inspirou
+    return (exp as number) * 1000 > currentDate;
+  } //se a expiração do meu token maior que a minha data atual, ou seja, ainda não inspirou
 
-  return false
+  return false;
+}
+
+function destroySession() {
+  cookies().delete("session");
 }
 
 const AuthService = {
   openSessionToken,
   createSessionToken,
-  isSessionValid
+  isSessionValid,
+  destroySession
 };
 
 export default AuthService;
