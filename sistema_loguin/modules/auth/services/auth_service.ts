@@ -33,8 +33,8 @@ async function isSessionValid() {
   const sessionCookie = cookies().get("session");
 
   if (sessionCookie) {
-    const { value } = sessionCookie;
-    const { exp } = await openSessionToken(value);
+    const { value } = sessionCookie; // ai pegou o token do cookie
+    const { exp } = await openSessionToken(value); //tentamos pegar o exp do payload caso o token que pegamos do cookie seja igual ao do authSecret, se nao for, ele retorna falso e a operaçao para 
     const currentDate = new Date().getTime();
 
     return (exp as number) * 1000 > currentDate;
