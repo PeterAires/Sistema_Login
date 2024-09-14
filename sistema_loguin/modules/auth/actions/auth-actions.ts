@@ -7,10 +7,12 @@ const prisma = new PrismaClient();
 
 async function CreateAccount(formData: FormData) {
   "use server";
-  try {
-    const name = formData.get("name") as string;
+
+  const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+
+  try {
     const hashPassword = await bcrypt.hash(password, 10); //10(dificulta a quebra da criptografia)
 
     await prisma.user.create({
