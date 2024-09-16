@@ -15,11 +15,12 @@ async function createSessionToken(payload = {}) {
   //Resumindo, essa função cria um token JWT com um payload, define um tempo de expiração, e armazena esse token em um cookie seguro no navegador.
 
   const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
-  const session = await new jose.SignJWT(payload) //colocar o payload dentro desse token jwt
+  const session = await new jose.SignJWT(payload) //criar um token 
     .setProtectedHeader({ alg: "HS256" }) //tipo do token
     .setExpirationTime("1d") //Um novo token JWT é criado com o payload, assinado usando o segredo e configurado para expirar em 1 dia.
     .sign(secret);
-  const { exp, role } = await openSessionToken(session); //pegar o tempo de expiração to token
+    //isso tudo ai vai ser o payload
+  const { exp } = await openSessionToken(session); //acabamos de criar, mas agora precisamos abrir pra usar o  que esta no payload(exp)
 
   cookies().set("session", session, {
     // armazenando o token em um cookie
@@ -33,8 +34,8 @@ async function isSessionValid() {
   const sessionCookie = cookies().get("session");
 
   if (sessionCookie) {
-    const { value } = sessionCookie; // ai pegou o token do cookie
-    const { exp } = await openSessionToken(value); //tentamos pegar o exp do payload caso o token que pegamos do cookie seja igual ao do authSecret, se nao for, ele retorna falso e a operaçao para 
+    const { value } = sessionCookie; //abrimos o cookie para pegar o token(com todas as infos)
+    const { exp } = await openSessionToken(value); //abrimos o token pra pegar o exp
     const currentDate = new Date().getTime();
 
     return (exp as number) * 1000 > currentDate;

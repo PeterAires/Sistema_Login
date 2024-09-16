@@ -22,11 +22,11 @@ export default function LoginForm() {
         </CardHeader>
         <CardContent>
           <div className=" grid w-full items-center gap-4">
-            <div className=" flex flex-col space-y-1.5">
+            <div className=" flex flex-col space-y-1.5 ">
               <Label htmlFor="email">Email</Label>
               <Input id="email" name="email" type="email" required></Input>
             </div>
-            <div className=" flex flex-col space-y-1.5">
+            <div className=" flex flex-col space-y-1.5 ">
               <Label htmlFor="email" className="">
                 Senha
               </Label>
