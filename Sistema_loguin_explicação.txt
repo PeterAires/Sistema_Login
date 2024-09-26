@@ -1,0 +1,59 @@
+Portal = Pagina fechada, precisa da autenticação
+	criar o usuario (email, loguin e senha)
+	criptografar no banco de dados
+	fazer o loguin (que presiça de uma seção (token JWT))
+		fazer a comparação com a função do bcript onde se pega o digitado e o que esta no banco
+		loguin efetuado com sucesso, agora é fechar o portal	
+	criar sessão JWT
+		bibliote jose (funciona bem para criar tokens, manipula esses tokens dentro de uma função (criar, assinar, verificar e decodificar tokens.))
+		AUTH_SECRET= #chave responsavel por criptografar o token JWT, manter segura, so com ela eu consigo acessar os dados	
+	travar as paginas para que sejam não sejam acessadas sem sessão 
+	e o que vai validar a sessão (se o tempo de expiração do token não acabou)
+	definir as paginas publicas (que podem ser acessadas sem um token)
+	logout apagando o cookie (no nosso caso so pode no back)
+		então teria que criar uma api pra isso
+
+	
+
+form action (faz requisição assincrona do lado do back)
+nunca passe o payload pra api, desestruture primeiro
+tem que passar o 'data' antes do email senha e etc
+bcrypt - criptografa a senha - 10 (dificulta a quebra)
+AuthActions - ajuda na organização e escalabilidade do codigo
+	ou se quiser adicionar mais funçoes, ai mantem todas as funçoes de autenticação agrupadas
+o id cria automaticamente por causa da tabela do prisma
+middleware - usado para travar as paginas, para que so possam ser acessadas com seção(validas)
+	trava as paginas, ja no arquivo, o que esta dentro do '' é o que não é pra ser travado, exemplo, arquivo de imagem, css
+	ou seja, pra não validar qualquer rota que seja compilação do next
+
+secret - Armazena uma chave secreta para (assinar Tokens, Verificar Tokens)
+token: segurança, chave para validar/autenticar alguma coisa
+	 permite que usuarios possam se autenticar de forma segura, om token possibilita açoes e documentos possam ser assinados e trafegar na internet com garantia de autoria e integridade de informaçoes
+JWT: segurança das informaçoes (forma segura e compacta de representar as claims)
+	claim: objetos json que podem ser criptografados ou assinados digitalmente
+	jwt assinado: assinado usando um algoritimo
+	jwt criptografado: garante o segredo das infos entre as partes
+	foi muito utilizado por: usar o json, pela segurança,
+	onde sao utilizados: Autenticação, Autorização, Troca de informações
+	jtw em tres partes: 
+	header, payload e signature
+	header(objeto json): define qual o tipo de token e qual o algoritimo de criptografia esta sendo utilizado na sua assinatura
+	payload: onde está contido as cleims
+		3 tipos de cleim, 
+			Registred cleim: sao as reivindicação definidas pelo padrao do jwt, possuem informaçoes uteis e de facil identificação:
+				 subject: id do usuario
+				TimesStan: informaçoes de data e hora em que o jwt foi utilizado
+				expiration: tempo pra sua utilização
+			resto: criado por usuarios
+	Signature: formada com o encode do header, payload mais uma chave tudo isso codificado no formato que foi especificado no header
+	
+	jwt formado: não coloque informaçoes sensiveis no jwt 
+	é um padrao utilizados por muitas linguagens
+
+cookeis - são arquivos de texto com pequenos fragmentos de dados – como nome de usuário e senha – que são usados para identificar seu computador enquanto você usa uma rede. um token pode ser salvo nele
+	Um pequeno arquivo que é salvo no computador das pessoas para ajudar a armazenar as preferências e outras informações usadas nas páginas da Web que elas visitam.
+	
+
+apis - pode ser uma rota publica, mas geralmente é privada, e quando vai acessala, geralmente não se quer redirecionar para o login
+	ou seja, quer que seja uma rota publica e quer que seja validado 1:32
+fazer api
